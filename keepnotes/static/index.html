@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#19191c">
+<title>Keep Notes</title>
+<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/app.css">
+<script src="/static/app.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/" aria-label="Keep Notes home">
+    <img src="/static/icon.svg" alt="" width="28" height="28">
+    <span class="brand-name">Keep <span class="brand-accent">Notes</span></span>
+  </a>
+  <label class="search">
+    <span class="visually-hidden">Search notes</span>
+    <input id="search" type="search" placeholder="Search notes, lists and tags" maxlength="200" autocomplete="off">
+  </label>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" aria-label="Views">
+    <div class="views">
+      <button class="view-btn" type="button" data-view="notes">Notes</button>
+      <button class="view-btn" type="button" data-view="reminders">Reminders <span id="due-badge" class="badge" hidden></span></button>
+      <button class="view-btn" type="button" data-view="archive">Archive</button>
+      <button class="view-btn" type="button" data-view="bin">Bin</button>
+    </div>
+    <div class="tag-list" id="tag-list" aria-label="Tags"></div>
+    <div class="transfer">
+      <a class="btn ghost" href="/api/export" download>Export</a>
+      <button class="btn ghost" type="button" id="import-btn">Import</button>
+      <input id="import-file" type="file" accept="application/json,.json" hidden>
+    </div>
+  </nav>
+
+  <main class="content">
+    <div id="due-banner" class="due-banner" hidden>
+      <span id="due-text"></span>
+      <button class="btn" type="button" id="due-show">Show</button>
+    </div>
+
+    <form id="composer" class="composer" autocomplete="off">
+      <input id="composer-title" class="composer-title" placeholder="Title" maxlength="500">
+      <textarea id="composer-body" class="composer-body" placeholder="Take a note (Markdown works)" rows="3" maxlength="100000"></textarea>
+      <div class="composer-actions">
+        <button class="btn ghost" type="button" id="composer-kind" aria-pressed="false">Checklist</button>
+        <button class="btn send" type="submit">Add note</button>
+      </div>
+    </form>
+
+    <div id="filter-line" class="filter-line" hidden>
+      <span id="filter-text"></span>
+      <button class="btn ghost" type="button" id="filter-clear">Clear</button>
+    </div>
+    <div id="bin-line" class="filter-line" hidden>
+      <span>Notes in the bin are deleted for good after 30 days.</span>
+      <button class="btn" type="button" id="bin-empty">Empty bin</button>
+    </div>
+
+    <section id="pinned-section" class="note-section" hidden>
+      <h2 class="section-title">Pinned</h2>
+      <div class="grid" id="pinned-grid"></div>
+    </section>
+    <section id="others-section" class="note-section">
+      <h2 class="section-title" id="others-title" hidden>Others</h2>
+      <div class="grid" id="others-grid"></div>
+    </section>
+    <p id="empty-state" class="empty-state" hidden></p>
+  </main>
+</div>
+
+<dialog id="editor" class="editor" aria-label="Edit note">
+  <form id="editor-form" method="dialog" autocomplete="off">
+    <input id="editor-title" class="editor-title" placeholder="Title" maxlength="500">
+    <textarea id="editor-body" class="editor-body" placeholder="Note (Markdown works)" rows="8" maxlength="100000"></textarea>
+    <div id="editor-items" class="editor-items" hidden>
+      <ul id="editor-item-list" class="editor-item-list"></ul>
+      <input id="editor-new-item" class="editor-new-item" placeholder="Add an item and press Enter" maxlength="1000">
+    </div>
+    <div class="editor-row">
+      <span class="editor-label">Colour</span>
+      <div id="editor-colors" class="swatches" role="radiogroup" aria-label="Colour"></div>
+    </div>
+    <label class="editor-row">
+      <span class="editor-label">Tags</span>
+      <input id="editor-tags" class="editor-input" placeholder="work, ideas" maxlength="900">
+    </label>
+    <div class="editor-row">
+      <label class="editor-label" for="editor-reminder">Reminder</label>
+      <input id="editor-reminder" class="editor-input" type="datetime-local">
+      <button class="btn ghost" type="button" id="editor-reminder-clear">Clear</button>
+    </div>
+    <div class="editor-actions">
+      <button class="btn ghost" type="button" id="editor-kind">Make checklist</button>
+      <span class="spacer"></span>
+      <button class="btn ghost" type="button" id="editor-cancel">Cancel</button>
+      <button class="btn send" type="submit" id="editor-save">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
