@@ -40,7 +40,7 @@ def _imported_note(raw, position: int) -> dict:
 
 def import_notes(store: NoteStore, payload) -> int:
     if not isinstance(payload, dict) or payload.get("app") != APP_NAME:
-        raise NoteError("this is not a Keep Notes export")
+        raise NoteError("this is not a Starfire Notes export")
     if payload.get("version") != EXPORT_VERSION:
         raise NoteError(f"this export is version {payload.get('version')!r}, only version {EXPORT_VERSION} can be read")
     notes = payload.get("notes")

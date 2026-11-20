@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from conftest import OWNER, SECRET
 
@@ -29,7 +31,9 @@ def test_pages_need_a_user_too(client, owner):
     assert client.get("/").status_code == 401
     page = owner.get("/")
     assert page.status_code == 200
-    assert b"Keep Notes" in page.data
+    assert b"<title>Starfire Notes</title>" in page.data
+    assert b'aria-label="Starfire Notes home"' in page.data
+    assert b'Starfire <span class="brand-accent">Notes</span>' in page.data
 
 
 def test_session_names_the_user_and_hands_out_a_csrf_token(owner):
@@ -209,3 +213,8 @@ def test_reordering_with_an_id_too_large_for_the_database_is_refused(owner):
 def test_json_nested_too_deeply_is_refused(owner, path):
     response = owner.client.post(path, data=DEEP_JSON, headers={**owner.write_headers, "Content-Type": "application/json"})
     assert response.status_code == 400
+
+
+def test_the_import_error_in_the_page_names_starfire_notes():
+    script = (Path(__file__).resolve().parent.parent / "keepnotes" / "static" / "app.js").read_text()
+    assert "That file is not a Starfire Notes export" in script

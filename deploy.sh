@@ -590,7 +590,7 @@ in_ct() {
 build_signin_bundle() {
   local work="$1"
   [ -f "$SITE_SIGNIN/build.py" ] || { echo "refusing: no site-signin builder at $SITE_SIGNIN (set SITE_SIGNIN)"; exit 1; }
-  python3 "$SITE_SIGNIN/build.py" --first Keep --second Notes --tagline "Sign in to reach your notes." \
+  python3 "$SITE_SIGNIN/build.py" --first Starfire --second Notes --tagline "Sign in to reach your notes." \
     --icon "$REPO/keepnotes/static/icon.svg" --out "$work/signin"
   tar -czf "$work/signin.tgz" -C "$work/signin" .
 }

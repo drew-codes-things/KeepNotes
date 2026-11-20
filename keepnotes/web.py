@@ -14,7 +14,7 @@ from .signin import SIGN_IN_PATHS, PasswordAuth, add_sign_in_pages
 from .transfer import export_notes, import_notes
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
-APP_NAME = "Keep Notes"
+APP_NAME = "Starfire Notes"
 MAX_REQUEST_BYTES = 10 * 1024 * 1024
 CSRF_HEADER = "X-CSRF-Token"
 SAFE_METHODS = ("GET", "HEAD", "OPTIONS")

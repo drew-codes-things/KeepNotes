@@ -47,6 +47,11 @@ def test_export_then_import_gives_the_same_notes(store, tmp_path, clock):
     assert sorted(everything(fresh), key=str) == sorted(everything(store), key=str)
 
 
+def test_an_import_from_another_app_is_refused_by_the_starfire_notes_name(store):
+    with pytest.raises(NoteError, match="this is not a Starfire Notes export"):
+        import_notes(store, {"app": "something-else"})
+
+
 def test_import_adds_to_what_is_already_there(store):
     store.create({"title": "existing"})
     import_notes(store, {"app": "keep-notes", "version": EXPORT_VERSION, "notes": [{"title": "imported"}]})

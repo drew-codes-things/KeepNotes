@@ -528,7 +528,7 @@ async function importFile(file) {
     showToast(`Imported ${result.imported} notes`);
     await refresh();
   } catch (error) {
-    reportError(error instanceof SyntaxError ? new Error('That file is not a Keep Notes export') : error);
+    reportError(error instanceof SyntaxError ? new Error('That file is not a Starfire Notes export') : error);
   }
 }
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-# Keep Notes
+# Starfire Notes
 
 **Your own free take on Google Keep. Notes and checklists with pins, colours, tags, search, an archive, a bin and reminders, kept in one SQLite file on your own server.**
 
@@ -11,17 +11,17 @@
 
 </div>
 
-![Keep Notes with a pinned note, checklists, tags and a due reminder](screenshot.png)
+![Starfire Notes with a pinned note, checklists, tags and a due reminder](screenshot.png)
 
 ---
 
 ## Overview
 
-Keep Notes is a small self-hosted web app for notes and to-do lists. It has
+Starfire Notes is a small self-hosted web app for notes and to-do lists. It has
 its own sign-in for one owner account, so a copy runs on its own. It can
 also sit behind a sign-in proxy: the author runs it behind the starfire
 sign-in like SpotMP3 and VideoDL, where Caddy checks the sign-in, then
-passes the request to Keep Notes on `127.0.0.1`.
+passes the request to Starfire Notes on `127.0.0.1`.
 
 - **Notes** with a title and a Markdown body (bold, lists, links, code,
   quotes, tables). Raw HTML is shown as text, never run.
@@ -67,7 +67,7 @@ machine: it then refuses to listen on anything but `127.0.0.1`, `::1` or
 
 ## First run and sign-in
 
-Keep Notes has its own sign-in, switched on by default (`AUTH_MODE=builtin`).
+Starfire Notes has its own sign-in, switched on by default (`AUTH_MODE=builtin`).
 There is one owner account and no sign-up page.
 
 1. Start it (`.venv/bin/python -m keepnotes`) and open
@@ -157,7 +157,7 @@ from those addresses; in the default mode it is never read.
   `/api/auth/users` (the admin account only), and then sets
   `X-Forwarded-User` itself, to `SIGNED_IN_USER` from `deploy/site.env`.
   `ALLOWED_USERS` in the server env file is set to the same name and makes
-  Keep Notes refuse anything else.
+  Starfire Notes refuse anything else.
 - Every write (`POST`, `PATCH`, `DELETE`) needs the `X-CSRF-Token` header
   from `/api/session`, an HMAC of the user made with the secret key. A write
   whose `Origin` is a different host is refused too.
@@ -222,11 +222,11 @@ systemctl start keep-notes
 > **UNTESTED.** `deploy.sh` and this section were written without touching
 > the live server. Read the script before running it.
 
-On that server Keep Notes trusts the gate instead of its own sign-in:
+On that server Starfire Notes trusts the gate instead of its own sign-in:
 `deploy/keep-notes.env` sets `AUTH_MODE=proxy` and
 `TRUSTED_PROXIES=127.0.0.1,::1` (Caddy on the same machine).
 
-`deploy.sh` installs Keep Notes into a Proxmox container that already runs
+`deploy.sh` installs Starfire Notes into a Proxmox container that already runs
 Caddy and the starfire sign-in, reached with `ssh` and `pct`. The values for
 your own setup live in `deploy/site.env`, which git ignores. Copy
 `deploy/site.env.example` and fill it in:
@@ -235,7 +235,7 @@ your own setup live in `deploy/site.env`, which git ignores. Copy
 |---|---|
 | `PROXMOX` | The ssh host name of the Proxmox machine. |
 | `CT` | The number of the container that runs Caddy. |
-| `SITE_HOST` | The host name Keep Notes is served on, like `keep.example.com`. |
+| `SITE_HOST` | The host name Starfire Notes is served on, like `keep.example.com`. |
 | `SIGNED_IN_USER` | The starfire admin account name; Caddy passes it on and it becomes `ALLOWED_USERS`. |
 
 What it sets up, matching SpotMP3:
@@ -266,7 +266,7 @@ it, so moving the app to another port means changing that one line and running
 The Caddyfile is checked with `caddy validate` before every reload and put back
 if it does not validate, and the sha256 of every deployed file is compared with
 the commit. If `systemctl reload caddy` fails, the Caddyfile is put back too,
-so a block Caddy never loaded is never left on disk. With Keep Notes already
+so a block Caddy never loaded is never left on disk. With Starfire Notes already
 running, a `PORT` that another program listens on is refused as well (the
 listener's process must be the keep-notes service's own). `check` also fails when
 the marked block sends to another port than `PORT`. Each `apply` and `undo`
